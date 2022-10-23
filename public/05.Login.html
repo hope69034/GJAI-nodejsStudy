@@ -1,0 +1,24 @@
+<!-- 로그인 s와 f로 이동 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body style="margin: 20px;">
+    <h1>특정 아이디하나(id:a,pw:a) 로그인 / 로긴 실패, 성공</h1>
+    <form action="http://127.0.0.1:3001/login" method="post">
+        <!-- password 포스트방식보안 -->
+        <input type="text" name="id">a입력<br>
+        <input type="password" name="pw">a입력<br><br>
+        <input type="submit" value="로그인"><br>
+
+    </form>
+
+</body>
+
+</html>

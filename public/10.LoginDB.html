@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body style="margin: 20px;">
+
+    <h1>로긴db페이지 : db에 아이디 비번이 있는지 확인</h1>
+    <form action="http://127.0.0.1:3001/loginDB" method="post">
+        <!-- password 포스트방식보안 -->
+        <table>
+            <tr>
+                <td>
+                    id
+                </td>
+                <td>
+                    <input type="text" name="id">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    pw
+                </td>
+                <td>
+                    <input type="password" name="pw">
+                </td>
+            </tr>
+        </table><br>
+        <input type="submit" value="로그인"><br>
+
+    </form>
+
+</body>
+
+</html>

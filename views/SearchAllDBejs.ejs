@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
+            text-align: center;
+            height: 200px;
+            width: 100%;
+        }
+    </style>
+    <h1>전체사용자정보</h1>
+    <table border="3px;">
+        <tr>
+            <th>id</th>
+            <th>pw</th>
+            <th>nick</th>
+        </tr>              <!-- i 0부터시작하니까 렝스보다 작다로 -->
+        <% for (let i=0; i < row_names.length; i++){%>
+        <tr>
+            <td>
+                <%= row_names[i].id %>
+            </td>
+            <td>
+                <%= row_names[i].pw %>
+            </td>
+            <td>
+                <%= row_names[i].nick %>
+            </td>
+            <td>
+                <a href="http://127.0.0.1:3001/SelectDelete?id=<%= row_names[i].id %>">삭제</a>
+            </td>
+        </tr>
+        <%}%>
+    </table>
+</body>
+
+</html>

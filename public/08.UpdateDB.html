@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body style="margin: 20px">
+
+    <h1> [DB] 회원 정보 수정</h1>
+
+    <form action="http://127.0.0.1:3001/updateDB" method="post">
+
+        <table>
+            <tr>
+                <td>
+                    id 의
+                </td>
+                <td>
+                    <input type="text" name="id">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    pw/nick 을
+                </td>
+                <td>
+                    <select name="select">
+                        <option>pw</option>
+                        <option>nick</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    value 로
+                </td>
+                <td>
+                    <input type="text" name="change">
+                </td>
+            </tr>
+        </table>
+
+        <br>
+        <input type="submit" value="수정">
+
+    </form>
+</body>
+
+</html>

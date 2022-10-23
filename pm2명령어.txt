@@ -1,0 +1,37 @@
+pm2 start [서퍼파일명] --watch
+    서버실행:   --watch는 무한실행
+
+pm2 kill
+    전체 서버파일 중지
+
+pm2 list
+    실행되고 있는 서버파일 확인
+
+pm2 monit
+    실행되고있는 서버파일 모니터링
+pm2 log  
+    로그만 위로 쭉 볼 수 있게 (monit는 짧게 보이니까)
+
+
+
+
+//종료
+pm2 kill
+
+//실행
+npx pm2 start app.js --watch 
+
+
+pm2 monit
+
+pm2 log
+
+
+npm install ejs
+
+
+
+
+npm install express-mysql-session --save 
+
+npm install express-session --save

@@ -1,0 +1,27 @@
+<!-- 숫자더하기 -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body style="margin: 20px">
+    <h1>숫자 두개 더하기</h1>
+    <form action="http://127.0.01:3001/plus" method="get">
+        <input type="text" name="num1">
+        +
+        <input type="text" name="num2">
+        <input type="submit" value="더하기">
+        <!-- html에서 서버로 값을 보내기 위한 세가지 조건
+1. form 태그 action속성(보내는방향지정)
+2. 사용자가입력하는 태그에 name속성 (이름표)
+3. input 태그의 tpye=submit 버튼 속성 -->
+    </form>
+</body>
+
+</html>
