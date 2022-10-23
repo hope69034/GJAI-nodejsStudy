@@ -381,9 +381,9 @@ router.get('/Logout', (request, response) => {
     })
 });
 
-module.exports = router; //라우터를외부에서사용할수있게
-
-//ejs에서
-/* router.get('/Message', (request,response)=>{
+//message.ejs를 띄우기 위한 라우터, 위 라우터들과 무관
+router.get('/Message', (request,response)=>{
     response.render('message',{});
-}) */
+})
+
+module.exports = router; //라우터를외부에서사용할수있게
