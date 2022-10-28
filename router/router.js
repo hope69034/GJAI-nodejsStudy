@@ -392,10 +392,21 @@ router.get("/Logout", (request, response) => {
 
 // 16 MessageRouter 메인
 router.get("/Message", (request, response) => {
-  response.render("message", {
-    //email : request.session.email
-    user: request.session.user,
-  });
+  console.log('message router')
+  //rec는보낸사람이메일
+  let sql = "select * from web_message where rec = ?";
+  //! 널이 아닐때
+  if (request.session.user) {
+    conn.query(sql, [request.session.user.email], (err, row) => {
+      console.log(row);
+      response.render("message", {
+        user: request.session.user,
+        row_name: row
+      });
+    });
+  } else {
+    response.render("message", { user: request.session.user });
+  }
 });
 
 //로그아웃
@@ -408,6 +419,7 @@ router.get("/MessageLogout", (request, response) => {
 //회원가입
 router.post("/MessageJoin", (request, response) => {
   let email = request.body.email;
+  console.log(email);
   let pw = request.body.pw;
   let tel = request.body.tel;
   let address = request.body.address;
@@ -423,20 +435,21 @@ router.post("/MessageJoin", (request, response) => {
       console.log("입력성공" + row);
 
       request.session.user = {
-        email: row[0].email,
-        pw: row[0].pw,
-        tel: row[0].tel,
-        address: row[0].address,
+        email: row.email,
+        pw: row.pw,
+        tel: row.tel,
+        address: row.address,
       };
-      /*             response.render('message', {
-                user:request.session.user
-            }) */
+      response.render("message", {
+        user: request.session.user,
+      });
     } else {
       console.log("입력실패" + err);
       response.redirect("07.3.JoinDBF.html"); //static
     }
   });
 });
+
 //로그인
 router.post("/Messagelogin", (request, response) => {
   let email = request.body.email;
@@ -469,11 +482,11 @@ router.post("/Messagelogin", (request, response) => {
         tel: row[0].tel,
         address: row[0].address,
       };
+      response.redirect("http://127.0.0.1:3001/message");
 
-      response.render("message", {
-        //email: request.session.email
-        user: request.session.user,
-      });
+      /* response.render("message", { */
+      //email: request.session.email
+      /*        user: request.session.user, */
     } else if (row.length == 0) {
       console.log("로긴실패");
       response.redirect("05.3.LoginF.html"); //http://127.0.0.1:5500/public/
@@ -481,12 +494,126 @@ router.post("/Messagelogin", (request, response) => {
   });
 });
 
-//admin으로 로그인 시 회원관리페이지를 오픈
-router.get("/admin", (request, response) => {
-    response.render("selectmember", {
-    //email : request.session.email
-    //user : request.session.user
-    });
+//로그인하면 회원정보수정 메뉴보이기 update.ejs를 렌더링하기 위한
+router.get("/MessageUpadate", (request, response) => {
+  let user = request.session.user;
+  console.log(user);
+  response.render("update", {
+    email: request.session.email,
+    user: request.session.user,
+  });
+});
+
+//회원정보수정 메뉴에서 수정하기 위한
+router.post("/messageupdateexe", (request, response) => {
+  let email = request.session.email; //이메일은유저가입력안하니까 바디가 아님
+  let pw = request.body.pw;
+  let tel = request.body.tel;
+  let address = request.body.address;
+  console.log("address: " + address);
+
+  //사용자가입력한 pw tel address로 정보 수정
+  /* let sql = "insert into web_member values(?,?,?,?,now())"; */
+  let sql = `
+  update web_member
+  set
+  pw=?,
+  tel=?,
+  address=?
+  where email=?
+  `;
+  conn.query(sql, [pw, tel, address, email], (err, row) => {
+    //[id,pw,nick]는물음표순서대로그대로
+    if (!err) {
+      //에러가없으면
+      console.log("입력성공" + row);
+      request.session.user = {
+        email: email, //위에서 let email변수 선언했으니까
+        /* 'pw' : response.session.pw 이건 에러 */
+        pw: pw,
+        tel: tel,
+        address: address,
+        /*   'address' : response.session.address   에러 */
+      };
+      response.redirect("http://127.0.0.1:3001/message");
+    } else {
+      console.log("입력실패" + err);
+    }
+  });
+});
+
+//post로안보냈기때문에 겟
+router.get("/MessagememberSelect", (request, response) => {
+  let sql = `
+    select * 
+    from web_member 
+    `;
+  conn.query(sql, (err, row) => {
+    if (err) {
+      console.log("검색실페에러" + err);
+    } else if (row.length > 0) {
+      /*  console.log(row) */
+      console.log("로긴성공");
+      response.render("selectmember", {
+        //email: request.session.email
+        /* user: request.session.user, */
+        row_name: row,
+      });
+    } else if (row.length == 0) {
+      //로긴실패가아니라 검색데이터(회원이없을떄)없을때
+      console.log("로긴실패");
+      response.redirect("http://127.0.0.1:3001/message"); //http://127.0.0.1:5500/public/
+    }
+  });
+});
+
+//message deletedb
+router.get("/deleteDBms", (request, response) => {
+  let email = request.query.email; //겟으로유알엘로받으니까 쿼리 //포스트면 바디
+  //쿼리대신 session하면 어드민이 삭제되니 조심 회원관리페이지를보는사람은어드민뿐이기때문
+  let tel = request.query.tel; //이메일이 널인 것도 삭제하기 위한 // 다른이멜도지워져서다시제거
+  let sql = "DELETE FROM web_member WHERE email=? ";
+  //      어떤sql? + 실패햇을떄와성공했을떄함수
+  conn.query(sql, [email, tel], (err, row) => {
+    //[id,pw,nick]는물음표순서대로그대로
+
+    if (err) {
+      console.log("에러,삭제실패" + err);
+    } else if (row.affectedRows > 0) {
+      //에러가없으면 //어펙티드로우스는 명령 성공 횟수
+      console.log("명령에성공한수:" + row.affectedRows);
+      console.log("삭제성공" + row);
+      console.log(row);
+      console.log(row.affectedRows);
+      console.log(row.length);
+      response.redirect("http://127.0.0.1:3001/MessagememberSelect"); //static
+    } else if (row.affectedRows == 0) {
+      console.log("삭제된값없음");
+      response.redirect("http://127.0.0.1:3001/MessagememberSelect"); //static
+    }
+  });
+});
+
+// 홈 send message 버튼 누르면 오는 라우터
+router.post("/messagesend", (request, response) => {
+  console.log('messagesend router');
+  let send = request.body.send; //보내는사람
+  let rec = request.body.rec; //받는사람
+  let content = request.body.content; //메세지
+
+  let sql =`insert into web_message(send,rec,content,send_date) values(?,?,?,now())`;
+
+  conn.query(sql, [send, rec, content], (err, row) => {
+    if (!err) {
+      console.log(row);
+      console.log("messagesend입력성공");
+      response.redirect("http://127.0.0.1:3001/message");
+    } else {
+
+      console.log("messagesend입력실패");
+      response.redirect("http://127.0.0.1:3001/message");
+    }
+  });
 });
 
 module.exports = router; //라우터를외부에서사용할수있게

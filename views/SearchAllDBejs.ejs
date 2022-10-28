@@ -25,19 +25,19 @@
             <th>pw</th>
             <th>nick</th>
         </tr>              <!-- i 0부터시작하니까 렝스보다 작다로 -->
-        <% for (let i=0; i < row_names.length; i++){%>
+        <% for (let i=0; i < row_name.length; i++){%>
         <tr>
             <td>
-                <%= row_names[i].id %>
+                <%= row_name[i].id %>
             </td>
             <td>
-                <%= row_names[i].pw %>
+                <%= row_name[i].pw %>
             </td>
             <td>
-                <%= row_names[i].nick %>
+                <%= row_name[i].nick %>
             </td>
             <td>
-                <a href="http://127.0.0.1:3001/SelectDelete?id=<%= row_names[i].id %>">삭제</a>
+                <a href="http://127.0.0.1:3001/deleteDBms?id=<%= row_name[i].id %>">삭제</a>
             </td>
         </tr>
         <%}%>

@@ -1,3 +1,4 @@
+//세션 저장 정보 확인 용
 
 const express = require('express')
 const sessionrouter=express.Router();
@@ -20,7 +21,7 @@ sessionrouter.get('/sessionSelect',(request,response)=>{
  //세션 삭제
 sessionrouter.get('/sessionDelect',(request,response)=>{ //3
     delete request.session.user
-    response.end()
+    response.end() //렌더나 리다이렉트나 엔드나 
 });
 
 module.exports=sessionrouter;

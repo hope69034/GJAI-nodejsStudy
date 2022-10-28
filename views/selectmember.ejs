@@ -22,6 +22,35 @@
                         <td>Addr</td>
                                 <td>삭제여부</td>
                      </tr>
+<!-- 로우네임안에잇는데이터를출력하세요 -->
+
+
+<% for (let i=0; i < row_name.length; i++){%>
+  <% if ( row_name[i].email != 'admin'){%>
+   <tr>
+      <td>
+         <%= row_name[i].email %>
+     </td>
+     
+
+       <td>
+           <%= row_name[i].tel %>
+       </td>
+       <td>
+           <%= row_name[i].address %>
+       </td>
+       <td>
+         
+      <a href="http://127.0.0.1:3001/deleteDBms?email=<%= row_name[i].email %>&tel=<%= row_name[i].tel %>">삭제</a>  
+       </td>
+   </tr>
+<%}%>
+   <%}%>
+
+
+
+
+
 
                   </table>
                </nav>
